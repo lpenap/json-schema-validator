@@ -10,13 +10,20 @@ import com.digitalicagroup.json.validator.properties.ValidatorProperties;
 public class Launcher {
 
 	public static void main(String[] args)
-			throws IOException, UnsupportedPropertiesVersionException, InvalidPropertiesException {
+			throws IOException {
 
 		System.out.println("Loading Validator...");
-		JSONValidator validator = new JSONValidator(ValidatorProperties.loadQueue());
+		JSONValidator validator = null;
+		try {
+			validator = new JSONValidator(ValidatorProperties.loadQueue());
+			System.out.println("Running validator...");
+			validator.executeQueue();
+		} catch (UnsupportedPropertiesVersionException e) {
+			System.out.println("Unsupported version of properties json. Aborting.");
+		} catch (InvalidPropertiesException e) {
+			System.out.println("Invalid properties json. Aborting.");
+		}
 
-		System.out.println("Running validator...");
-		validator.executeQueue();
 
 		System.out.println("Done");
 	}
