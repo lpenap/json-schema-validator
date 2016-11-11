@@ -9,9 +9,8 @@ import com.digitalicagroup.json.validator.properties.ValidatorProperties;
 
 public class Launcher {
 
-	public static void main(String[] args)
-			throws IOException {
-
+	public static void main(String[] args) throws IOException {
+		System.out.println("\n###############################################################################");
 		System.out.println("Loading Validator...");
 		JSONValidator validator = null;
 		try {
@@ -24,8 +23,8 @@ public class Launcher {
 			System.out.println("Invalid properties json. Aborting.");
 		}
 
-
-		System.out.println("Done");
+		System.out.println("Done.");
+		System.out.println("###############################################################################\n");
 	}
 
 }
