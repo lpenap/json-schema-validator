@@ -13,3 +13,11 @@ validation needs.
 * Remote API requests can be configured with custom headers.
 
 ## Installation
+* clone this repo
+```bash
+git clone https://github.com/lpenap/json-schema-validator.git
+```
+* execute it to verify proper working examples
+```bash
+mvn exec:java
+```
