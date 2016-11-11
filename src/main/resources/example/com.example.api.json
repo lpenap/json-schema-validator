@@ -1,0 +1,12 @@
+{
+	"key_1": "string_value_1",
+	"key_2": true,
+	"key_3": 1,
+	"key_4": 4.5,
+	"data": [
+		{
+			"data1": "hey",
+			"data2": false
+		}
+	]
+}

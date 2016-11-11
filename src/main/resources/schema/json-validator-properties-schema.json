@@ -1,0 +1,31 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "queue": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "is_url": {
+            "type": "boolean"
+          },
+          "path": {
+            "type": "string"
+          },
+          "schema": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "is_url",
+          "path",
+          "schema"
+        ]
+      }
+    }
+  },
+  "required": [
+    "queue"
+  ]
+}

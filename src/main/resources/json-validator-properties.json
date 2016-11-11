@@ -1,0 +1,15 @@
+{
+	"version": 1,
+	"queue": [
+		{
+			"is_remote": false,
+			"path": "/example/com.example.api.json",
+			"schema": "/example/com.example.api-schema.json"
+		},
+		{
+			"is_remote": true,
+			"path": "https://private-2db5f-luisaugustopenapereira.apiary-mock.com/notes",
+			"schema": "/example/com.apiary-mock-notes-schema.json"
+		}
+	]
+}

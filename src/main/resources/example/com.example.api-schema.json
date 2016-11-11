@@ -1,0 +1,43 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "key_1": {
+      "type": "string"
+    },
+    "key_2": {
+      "type": "boolean"
+    },
+    "key_3": {
+      "type": "integer"
+    },
+    "key_4": {
+      "type": "number"
+    },
+    "data": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "data1": {
+            "type": "string"
+          },
+          "data2": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "data1",
+          "data2"
+        ]
+      }
+    }
+  },
+  "required": [
+    "key_1",
+    "key_2",
+    "key_3",
+    "key_4",
+    "data"
+  ]
+}
