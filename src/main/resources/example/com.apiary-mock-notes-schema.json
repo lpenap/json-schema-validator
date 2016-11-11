@@ -1,19 +1,27 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "type": "array",
-  "items": {
-    "type": "object",
-    "properties": {
-      "id": {
-        "type": "integer"
-      },
-      "title": {
-        "type": "string"
+  "type": "object",
+  "properties": {
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "title": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title"
+        ]
       }
-    },
-    "required": [
-      "id",
-      "title"
-    ]
-  }
+    }
+  },
+  "required": [
+    "notes"
+  ]
 }

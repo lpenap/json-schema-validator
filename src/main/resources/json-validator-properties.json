@@ -9,7 +9,18 @@
 		{
 			"is_remote": true,
 			"path": "https://private-2db5f-luisaugustopenapereira.apiary-mock.com/notes",
-			"schema": "/example/com.apiary-mock-notes-schema.json"
+			"schema": "/example/com.apiary-mock-notes-schema.json",
+			"method": "GET",
+			"headers": [
+				{
+					"key": "Cache-Control",
+					"value": "no-cache"
+				},
+				{
+					"key": "Accept",
+					"value": "application/json"
+				}
+			]
 		}
 	]
 }

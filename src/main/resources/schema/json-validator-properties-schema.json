@@ -2,12 +2,15 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
   "properties": {
+    "version": {
+      "type": "integer"
+    },
     "queue": {
       "type": "array",
       "items": {
         "type": "object",
         "properties": {
-          "is_url": {
+          "is_remote": {
             "type": "boolean"
           },
           "path": {
@@ -15,10 +18,31 @@
           },
           "schema": {
             "type": "string"
+          },
+          "method": {
+            "type": "string"
+          },
+          "headers": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "key": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "key",
+                "value"
+              ]
+            }
           }
         },
         "required": [
-          "is_url",
+          "is_remote",
           "path",
           "schema"
         ]
@@ -26,6 +50,7 @@
     }
   },
   "required": [
+    "version",
     "queue"
   ]
 }

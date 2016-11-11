@@ -1,18 +1,23 @@
 package com.digitalicagroup.json.validator.properties;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.digitalicagroup.json.Util;
+import com.digitalicagroup.json.validator.JSONValidator;
 
 public class ValidatorProperties {
-	protected final String schema = "/schema/json-validator-properties-schema.json";
-	protected final String properties = "/json-validator-properties.json";
+	protected static final String schema = "/schema/json-validator-properties-schema.json";
+	protected static final String properties = "/json-validator-properties.json";
 
-	public Queue loadQueue() throws UnsupportedPropertiesVersionException, InvalidPropertiesException {
+	public static Queue loadQueue() throws UnsupportedPropertiesVersionException, InvalidPropertiesException {
 		Util util = new Util();
 		String propertiesRaw = util.readFile(properties);
-		if (!util.validate(schema, propertiesRaw)) {
+		JSONValidator validator = new JSONValidator();
+		if (!validator.validate(schema, propertiesRaw)) {
 			throw new InvalidPropertiesException("invalid json-validator-properties.json syntax");
 		}
 		JSONObject properties = new JSONObject(propertiesRaw);
@@ -31,6 +36,21 @@ public class ValidatorProperties {
 			item.setPath((String) rawItem.get("path"));
 			item.setSchema((String) rawItem.get("schema"));
 			queue.addItem(item);
+
+			if (item.isRemote()) {
+				item.setMethod(rawItem.isNull("method") ? "GET" : rawItem.getString("method"));
+				Map<String, String> headers = new HashMap<String, String>();
+				if (!rawItem.isNull("headers")) {
+					JSONArray headersRaw = rawItem.getJSONArray("headers");
+					int j = 0;
+					while (!headersRaw.isNull(j)) {
+						JSONObject pair = headersRaw.getJSONObject(j);
+						headers.put(pair.getString("key"), pair.getString("value"));
+						j++;
+					}
+				}
+				item.setHeaders(headers);
+			}
 			i++;
 		}
 		return queue;
