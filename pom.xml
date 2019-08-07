@@ -1,15 +1,36 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.digitalicagroup.json</groupId>
-	<artifactId>validator</artifactId>
-	<version>0.1</version>
+	<groupId>com.penapereira</groupId>
+	<artifactId>json-validator</artifactId>
+	<version>0.2</version>
 	<packaging>jar</packaging>
 	<dependencies>
 		<dependency>
 			<groupId>org.everit.json</groupId>
 			<artifactId>org.everit.json.schema</artifactId>
-			<version>1.4.1</version>
+			<version>1.5.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.8</version>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-core</artifactId>
+			<version>1.2.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.26</version>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>1.2.3</version>
 		</dependency>
 	</dependencies>
 
@@ -38,7 +59,7 @@
 					</execution>
 				</executions>
 				<configuration>
-					<mainClass>com.digitalicagroup.json.validator.launcher.Launcher</mainClass>
+					<mainClass>com.penapereira.json.validator.Launcher</mainClass>
 					<arguments>
 						<argument>argument1</argument>
 					</arguments>
@@ -62,7 +83,7 @@
 							<addClasspath>true</addClasspath>
 						</manifest>
 						<manifestEntries>
-							<Main-Class>com.digitalicagroup.json.validator.launcher.Launcher</Main-Class>
+							<Main-Class>com.penapereira.json.validator.Launcher</Main-Class>
 						</manifestEntries>
 					</archive>
 				</configuration>
@@ -73,7 +94,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>com.digitalicagroup.json.validator.launcher.Launcher</mainClass>
+							<mainClass>com.penapereira.json.validator.Launcher</mainClass>
 						</manifest>
 					</archive>
 					<descriptorRefs>
