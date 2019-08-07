@@ -13,9 +13,8 @@ public class QueueItem {
 	protected String method;
 	protected Map<String, String> headers;
 
-	public QueueItem(boolean isRemote, boolean isArray, String path, String schema) {
+	public QueueItem(boolean isRemote, String path, String schema) {
 		setRemote(isRemote);
-		setArray(isArray);
 		setPath(path);
 		setSchema(schema);
 	}

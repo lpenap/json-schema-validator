@@ -38,8 +38,9 @@ public class ValidatorProperties {
 		int i = 0;
 		while (!queueItems.isNull(i)) {
 			JSONObject rawItem = queueItems.getJSONObject(i);
-			QueueItem item = new QueueItem((boolean) rawItem.get("is_remote"), (boolean) rawItem.get("is_array"),
-					(String) rawItem.get("path"), (String) rawItem.get("schema"));
+			QueueItem item = new QueueItem((boolean) rawItem.get("is_remote"), (String) rawItem.get("path"),
+					(String) rawItem.get("schema"));
+			item.setArray((boolean) rawItem.get("is_array"));
 			queue.addItem(item);
 
 			if (item.isRemote()) {
