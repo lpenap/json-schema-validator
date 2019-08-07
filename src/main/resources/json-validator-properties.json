@@ -1,26 +1,28 @@
 {
-	"version": 1,
-	"queue": [
-		{
-			"is_remote": false,
-			"path": "/example/com.example.api.json",
-			"schema": "/example/com.example.api-schema.json"
-		},
-		{
-			"is_remote": true,
-			"path": "https://private-2db5f-luisaugustopenapereira.apiary-mock.com/notes",
-			"schema": "/example/com.apiary-mock-notes-schema.json",
-			"method": "GET",
-			"headers": [
-				{
-					"key": "Cache-Control",
-					"value": "no-cache"
-				},
-				{
-					"key": "Accept",
-					"value": "application/json"
-				}
-			]
-		}
-	]
+  "version": 2,
+  "queue": [
+    {
+      "is_remote": false,
+      "is_array": false,
+      "path": "/example/com.example.api.json",
+      "schema": "/example/com.example.api-schema.json"
+    },
+    {
+      "is_remote": true,
+      "is_array": true,
+      "path": "https://jsonplaceholder.typicode.com/users",
+      "schema": "/example/com.typicode.jsonplaceholder-users.json",
+      "method": "GET",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache"
+        },
+        {
+          "key": "Accept",
+          "value": "application/json"
+        }
+      ]
+    }
+  ]
 }

@@ -1,4 +1,4 @@
-package com.digitalicagroup.json;
+package com.penapereira.json.validator.util;
 
 import java.io.BufferedReader;
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package com.digitalicagroup.json.validator.properties;
+package com.penapereira.json.validator.properties;
 
 public class InvalidPropertiesException extends Exception {
 	public InvalidPropertiesException(String string) {

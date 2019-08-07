@@ -1,56 +1,71 @@
 {
-  "$schema": "http://json-schema.org/draft-04/schema#",
+  "definitions": {},
+  "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
-  "properties": {
-    "version": {
-      "type": "integer"
-    },
-    "queue": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "is_remote": {
-            "type": "boolean"
-          },
-          "path": {
-            "type": "string"
-          },
-          "schema": {
-            "type": "string"
-          },
-          "method": {
-            "type": "string"
-          },
-          "headers": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "key": {
-                  "type": "string"
-                },
-                "value": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "key",
-                "value"
-              ]
-            }
-          }
-        },
-        "required": [
-          "is_remote",
-          "path",
-          "schema"
-        ]
-      }
-    }
-  },
+  "title": "json validator properties schema",
   "required": [
     "version",
     "queue"
-  ]
+  ],
+  "properties": {
+    "version": {
+      "$id": "#/properties/version",
+      "type": "integer",
+      "title": "properties file version",
+      "default": 0,
+      "examples": [
+        2
+      ]
+    },
+    "queue": {
+      "$id": "#/properties/queue",
+      "type": "array",
+      "items": {
+        "$id": "#/properties/queue/items",
+        "type": "object",
+        "required": [
+          "is_remote",
+          "is_array",
+          "path",
+          "schema"
+        ],
+        "properties": {
+          "is_remote": {
+            "$id": "#/properties/queue/items/properties/is_remote",
+            "type": "boolean",
+            "default": false,
+            "examples": [
+              false
+            ]
+          },
+          "is_array": {
+            "$id": "#/properties/queue/items/properties/is_array",
+            "type": "boolean",
+            "default": false,
+            "examples": [
+              false
+            ]
+          },
+          "path": {
+            "$id": "#/properties/queue/items/properties/path",
+            "type": "string",
+            "default": "",
+            "examples": [
+              "/example/com.example.api.json"
+            ],
+            "pattern": "^(.*)$"
+          },
+          "schema": {
+            "$id": "#/properties/queue/items/properties/schema",
+            "type": "string",
+            "default": "",
+            "examples": [
+              "/example/com.example.api-schema.json"
+            ],
+            "pattern": "^(.*)$"
+          }
+        }
+      }
+    }
+  }
 }

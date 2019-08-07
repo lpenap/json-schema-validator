@@ -1,4 +1,4 @@
-package com.digitalicagroup.json.validator.properties;
+package com.penapereira.json.validator.properties;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,8 +6,8 @@ import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.digitalicagroup.json.Util;
-import com.digitalicagroup.json.validator.JSONValidator;
+import com.penapereira.json.validator.JSONValidator;
+import com.penapereira.json.validator.util.Util;
 
 public class ValidatorProperties {
 	protected static final String schema = "/schema/json-validator-properties-schema.json";
@@ -17,7 +17,9 @@ public class ValidatorProperties {
 		Util util = new Util();
 		String propertiesRaw = util.readFile(properties);
 		JSONValidator validator = new JSONValidator();
-		if (!validator.validate(schema, propertiesRaw)) {
+		QueueItem myProperties = new QueueItem();
+		myProperties.setSchema(schema);
+		if (!validator.validate(myProperties, propertiesRaw)) {
 			throw new InvalidPropertiesException("invalid json-validator-properties.json syntax");
 		}
 		JSONObject properties = new JSONObject(propertiesRaw);
@@ -33,6 +35,7 @@ public class ValidatorProperties {
 			JSONObject rawItem = queueItems.getJSONObject(i);
 			QueueItem item = new QueueItem();
 			item.setRemote((boolean) rawItem.get("is_remote"));
+			item.setArray((boolean) rawItem.get("is_array"));
 			item.setPath((String) rawItem.get("path"));
 			item.setSchema((String) rawItem.get("schema"));
 			queue.addItem(item);

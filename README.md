@@ -2,7 +2,7 @@
 [![codebeat badge](https://codebeat.co/badges/02872181-0b92-4c56-b844-edc41724b6a8)](https://codebeat.co/projects/github-com-lpenap-json-schema-validator)
 [![Build Status](https://travis-ci.org/lpenap/json-schema-validator.svg?branch=master)](https://travis-ci.org/lpenap/json-schema-validator)
 
-JSON validation using schemas v4. This is a simple facility oriented to be executed
+JSON validation using Draft v4, v6 and v7. This is a simple facility oriented to be executed
 as a part of a batch process, on a server or as part of integrated tests. It can be used to
 test your API in development or local files.
 
