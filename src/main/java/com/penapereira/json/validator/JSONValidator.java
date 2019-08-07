@@ -47,7 +47,7 @@ public class JSONValidator {
 			rawJson = util.readFile(item.getPath());
 		}
 		String result = validate(item, rawJson) ? "OK" : "INVALID";
-		log.info("% -> %s !", item.getPath(), result);
+		log.info(String.format("%s -> %s !", item.getPath(), result));
 	}
 
 	private String requestRemoteJson(QueueItem item, String rawJson) {
