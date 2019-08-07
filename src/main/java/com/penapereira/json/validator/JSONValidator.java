@@ -19,48 +19,52 @@ import com.penapereira.json.validator.util.Util;
 
 public class JSONValidator {
 	protected Queue queue;
+	private Util util;
 	private static Logger log = LoggerFactory.getLogger(JSONValidator.class);
 
 	public JSONValidator(Queue queue) {
 		this.queue = queue;
+		util = new Util();
 	}
 
 	public JSONValidator() {
-
+		util = new Util();
 	}
 
 	public void executeQueue() {
 		log.info("Validating " + this.queue.getItems().size() + "  elements in queue...");
-		Util util = new Util();
 		for (QueueItem item : this.queue.getItems()) {
 			log.debug("# checking " + item.getPath());
-			String rawJson = "";
-			if (item.isRemote()) {
-				try {
-					log.info("Requesting remote Json: " + item.getPath());
-					rawJson = util.requestJson(item.getPath(), item.getMethod(), item.getHeaders());
-				} catch (IOException e) {
-					log.error("Error requesting remote json", e);
-				}
-			} else {
-				rawJson = util.readFile(item.getPath());
-			}
-			if (validate(item, rawJson)) {
-				log.info(item.getPath() + " -> OK !");
-			} else {
-				log.error(item.getPath() + " -> INVALID !");
-			}
-
+			processQueueItem(item);
 		}
+	}
 
+	private void processQueueItem(QueueItem item) {
+		String rawJson = "";
+		if (item.isRemote()) {
+			rawJson = requestRemoteJson(item, rawJson);
+		} else {
+			rawJson = util.readFile(item.getPath());
+		}
+		String result = validate(item, rawJson) ? "OK" : "INVALID";
+		log.info("% -> %s !", item.getPath(), result);
+	}
+
+	private String requestRemoteJson(QueueItem item, String rawJson) {
+		try {
+			log.info("Requesting remote Json: " + item.getPath());
+			rawJson = util.requestJson(item.getPath(), item.getMethod(), item.getHeaders());
+		} catch (IOException e) {
+			log.error("Error requesting remote json", e);
+		}
+		return rawJson;
 	}
 
 	public boolean validate(QueueItem item, String Json) {
 		boolean valid = true;
 		try {
 			InputStream inputStream = getClass().getResourceAsStream(item.getSchema());
-			JSONObject rawSchema = new JSONObject(new JSONTokener(inputStream));
-			Schema schema = SchemaLoader.load(rawSchema);
+			Schema schema = SchemaLoader.load(new JSONObject(new JSONTokener(inputStream)));
 			if (item.isArray()) {
 				schema.validate(new JSONArray(Json));
 			} else {
