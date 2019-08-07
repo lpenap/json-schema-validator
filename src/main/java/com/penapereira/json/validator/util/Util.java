@@ -8,9 +8,6 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.util.Map;
-import java.util.Set;
-
-import javax.net.ssl.HttpsURLConnection;
 
 public class Util {
 
@@ -37,14 +34,7 @@ public class Util {
 
 	private HttpURLConnection createConnection(String endpoint, String method, Map<String, String> headers)
 			throws MalformedURLException, IOException, ProtocolException {
-		URL url = new URL(endpoint);
-		HttpURLConnection conn = null;
-
-		if (url.getProtocol().equalsIgnoreCase("https")) {
-			conn = (HttpsURLConnection) url.openConnection();
-		} else {
-			conn = (HttpURLConnection) url.openConnection();
-		}
+		HttpURLConnection conn = (HttpURLConnection) new URL(endpoint).openConnection();
 
 		conn.setRequestMethod(method);
 		conn.setRequestProperty("Accept", "application/json");
