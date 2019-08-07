@@ -1,5 +1,5 @@
 # JSON Schema Validator for local & remote files
-[![codebeat badge](https://codebeat.co/badges/02872181-0b92-4c56-b844-edc41724b6a8)](https://codebeat.co/projects/github-com-lpenap-json-schema-validator)
+[![codebeat badge](https://codebeat.co/badges/b9cae666-0fb9-4562-9a40-36ab93a8c47f)](https://codebeat.co/projects/github-com-lpenap-json-schema-validator-master)
 [![Build Status](https://travis-ci.org/lpenap/json-schema-validator.svg?branch=master)](https://travis-ci.org/lpenap/json-schema-validator)
 
 Simple JSON validation facility using Draft v4, v6 and v7. This is oriented to be executed

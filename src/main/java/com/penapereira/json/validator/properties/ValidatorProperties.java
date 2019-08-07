@@ -30,33 +30,43 @@ public class ValidatorProperties {
 		}
 
 		JSONArray queueItems = properties.getJSONArray("queue");
+		processQueueItems(queue, queueItems);
+		return queue;
+	}
+
+	private static void processQueueItems(Queue queue, JSONArray queueItems) {
 		int i = 0;
 		while (!queueItems.isNull(i)) {
 			JSONObject rawItem = queueItems.getJSONObject(i);
-			QueueItem item = new QueueItem();
-			item.setRemote((boolean) rawItem.get("is_remote"));
+			QueueItem item = new QueueItem((boolean) rawItem.get("is_remote"), (String) rawItem.get("path"),
+					(String) rawItem.get("schema"));
 			item.setArray((boolean) rawItem.get("is_array"));
-			item.setPath((String) rawItem.get("path"));
-			item.setSchema((String) rawItem.get("schema"));
 			queue.addItem(item);
 
 			if (item.isRemote()) {
-				item.setMethod(rawItem.isNull("method") ? "GET" : rawItem.getString("method"));
-				Map<String, String> headers = new HashMap<String, String>();
-				if (!rawItem.isNull("headers")) {
-					JSONArray headersRaw = rawItem.getJSONArray("headers");
-					int j = 0;
-					while (!headersRaw.isNull(j)) {
-						JSONObject pair = headersRaw.getJSONObject(j);
-						headers.put(pair.getString("key"), pair.getString("value"));
-						j++;
-					}
-				}
-				item.setHeaders(headers);
+				processRemoteItem(rawItem, item);
 			}
 			i++;
 		}
-		return queue;
+	}
+
+	private static void processRemoteItem(JSONObject rawItem, QueueItem item) {
+		item.setMethod(rawItem.isNull("method") ? "GET" : rawItem.getString("method"));
+		Map<String, String> headers = new HashMap<String, String>();
+		if (!rawItem.isNull("headers")) {
+			JSONArray headersRaw = rawItem.getJSONArray("headers");
+			processRemoteItemHeaders(headers, headersRaw);
+		}
+		item.setHeaders(headers);
+	}
+
+	private static void processRemoteItemHeaders(Map<String, String> headers, JSONArray headersRaw) {
+		int j = 0;
+		while (!headersRaw.isNull(j)) {
+			JSONObject pair = headersRaw.getJSONObject(j);
+			headers.put(pair.getString("key"), pair.getString("value"));
+			j++;
+		}
 	}
 
 }

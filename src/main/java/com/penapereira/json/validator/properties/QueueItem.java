@@ -12,4 +12,13 @@ public class QueueItem {
 	protected String schema;
 	protected String method;
 	protected Map<String, String> headers;
+
+	public QueueItem(boolean isRemote, String path, String schema) {
+		setRemote(isRemote);
+		setPath(path);
+		setSchema(schema);
+	}
+
+	public QueueItem() {
+	}
 }
