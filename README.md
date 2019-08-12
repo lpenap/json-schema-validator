@@ -1,6 +1,6 @@
 [![codebeat badge](https://codebeat.co/badges/b9cae666-0fb9-4562-9a40-36ab93a8c47f)](https://codebeat.co/projects/github-com-lpenap-json-schema-validator-master)
 [![Build Status](https://travis-ci.org/lpenap/json-schema-validator.svg?branch=master)](https://travis-ci.org/lpenap/json-schema-validator)
-[![GitHub release](https://img.shields.io/github/release/lpenap/json-schema-validator)](/lpenap/json-schema-validator/releases/latest)
+[![GitHub release](https://img.shields.io/github/release/lpenap/json-schema-validator)](//github.com/lpenap/json-schema-validator/releases/latest)
 
 # JSON Schema Validator for local & remote files
 Simple JSON validation facility using Draft v4, v6 and v7. This is oriented to be executed
@@ -28,7 +28,7 @@ git clone https://github.com/lpenap/json-schema-validator.git
 mvn exec:java
 ```
 ### From jar file
-* Download [latest release](/lpenap/json-schema-validator/releases/latest) and execute
+* Download [latest release](//github.com/lpenap/json-schema-validator/releases/latest) and execute
 ```bash
 java -jar json-validator-0.X-jar-with-dependencies.jar
 ```
