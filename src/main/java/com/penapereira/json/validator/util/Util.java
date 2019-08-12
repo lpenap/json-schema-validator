@@ -1,7 +1,10 @@
 package com.penapereira.json.validator.util;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -9,13 +12,21 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.util.Map;
 
-public class Util {
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-	public String requestJson(String endpoint, String method, Map<String, String> headers) throws IOException {
+import com.penapereira.json.validator.exception.ResourceNotFoundException;
+
+public class Util implements UtilInterface {
+
+	private static Logger log = LoggerFactory.getLogger(Util.class);
+
+	@Override
+	public String requestJson(String endpoint, String method, Map<String, String> headers) throws IOException, ResourceNotFoundException {
 		HttpURLConnection conn = createConnection(endpoint, method, headers);
 		conn.connect();
 		if (conn.getResponseCode() != 200) {
-			throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
+			throw new ResourceNotFoundException("Failed : HTTP error code : " + conn.getResponseCode());
 		}
 		StringBuffer buffer = readStringFromConnection(conn);
 		conn.disconnect();
@@ -46,17 +57,45 @@ public class Util {
 		return conn;
 	}
 
-	public String readFile(String path) {
-		StringBuffer buffer = new StringBuffer();
+	private String readInputStream(InputStream input) {
+		StringBuffer stringBuffer = new StringBuffer();
+		BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+		String currentLine;
 		try {
-			BufferedReader br = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(path)));
-			String sCurrentLine;
-			while ((sCurrentLine = br.readLine()) != null) {
-				buffer.append(sCurrentLine);
+			while ((currentLine = reader.readLine()) != null) {
+				stringBuffer.append(currentLine);
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			log.error("Error (IOException)reading input stream from file ", e);
 		}
-		return buffer.toString();
+		return stringBuffer.toString();
 	}
+
+	private String readResourceFile(String path) throws ResourceNotFoundException {
+		InputStream input = getClass().getResourceAsStream(path);
+		if (input == null) {
+			throw new ResourceNotFoundException(String.format("Preferences not found in path: %s", path));
+		}
+		return readInputStream(input);
+	}
+
+	private String readFile(String path) throws FileNotFoundException {
+		return readInputStream(new FileInputStream(path));
+	}
+
+	@Override
+	public String getFileContents(String path) throws ResourceNotFoundException {
+		String contents = "";
+		boolean notFoundInFileSystem = false;
+		try {
+			contents = readFile(path);
+		} catch (FileNotFoundException ignored) {
+			notFoundInFileSystem = true;
+		}
+		if (notFoundInFileSystem) {
+			contents = readResourceFile(path);
+		}
+		return contents;
+	}
+
 }
