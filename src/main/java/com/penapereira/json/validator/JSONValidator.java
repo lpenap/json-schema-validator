@@ -13,69 +13,63 @@ import org.json.JSONTokener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.penapereira.json.validator.exception.ResourceNotFoundException;
 import com.penapereira.json.validator.properties.Queue;
 import com.penapereira.json.validator.properties.QueueItem;
 import com.penapereira.json.validator.util.Util;
+import com.penapereira.json.validator.util.UtilInterface;
 
 public class JSONValidator {
 	protected Queue queue;
-	private Util util;
+	private UtilInterface util = new Util();
 	private static Logger log = LoggerFactory.getLogger(JSONValidator.class);
 
 	public JSONValidator(Queue queue) {
 		this.queue = queue;
-		util = new Util();
 	}
 
 	public JSONValidator() {
-		util = new Util();
 	}
 
 	public void executeQueue() {
-		log.info("Validating " + this.queue.getItems().size() + "  elements in queue...");
+		log.info("  Validating " + this.queue.getItems().size() + " elements in queue...");
 		for (QueueItem item : this.queue.getItems()) {
-			log.debug("# checking " + item.getPath());
-			processQueueItem(item);
-		}
-	}
-
-	private void processQueueItem(QueueItem item) {
-		String rawJson = "";
-		if (item.isRemote()) {
-			rawJson = requestRemoteJson(item, rawJson);
-		} else {
-			rawJson = util.readFile(item.getPath());
-		}
-		String result = validate(item, rawJson) ? "OK" : "INVALID";
-		log.info(String.format("%s -> %s !", item.getPath(), result));
-	}
-
-	private String requestRemoteJson(QueueItem item, String rawJson) {
-		try {
-			log.info("Requesting remote Json: " + item.getPath());
-			rawJson = util.requestJson(item.getPath(), item.getMethod(), item.getHeaders());
-		} catch (IOException e) {
-			log.error("Error requesting remote json", e);
-		}
-		return rawJson;
-	}
-
-	public boolean validate(QueueItem item, String Json) {
-		boolean valid = true;
-		try {
-			InputStream inputStream = getClass().getResourceAsStream(item.getSchema());
-			Schema schema = SchemaLoader.load(new JSONObject(new JSONTokener(inputStream)));
-			if (item.isArray()) {
-				schema.validate(new JSONArray(Json));
-			} else {
-				schema.validate(new JSONObject(Json));
+			log.debug("  # checking " + item.getPath());
+			String result = "[OK]";
+			try {
+				processQueueItem(item);
+			} catch (ResourceNotFoundException e) {
+				result = "[ERROR] Resource not found";
+			} catch (IOException e) {
+				result = "[ERROR] I/O Error reading content";
+			} catch (JSONException e) {
+				result = "[ERROR] Invalid Json";
+			} catch (ValidationException e) {
+				result = "[ERROR] Invalid against schema";
 			}
-		} catch (ValidationException | JSONException e) {
-			log.error("Error validating json: " + e.getMessage());
-			log.debug("Error while validating schema", e);
-			valid = false;
+			log.info(String.format("  %s -> %s !", item.getPath(), result));
 		}
-		return valid;
+	}
+
+	private void processQueueItem(QueueItem item)
+			throws ResourceNotFoundException, IOException, ValidationException, JSONException {
+		String rawJson;
+		if (item.isRemote()) {
+			rawJson = util.requestJson(item.getPath(), item.getMethod(), item.getHeaders());
+		} else {
+			rawJson = util.getFileContents(item.getPath());
+		}
+		validate(item, rawJson);
+	}
+
+	public void validate(QueueItem item, String Json) throws JSONException, ValidationException {
+		InputStream inputStream = getClass().getResourceAsStream(item.getSchema());
+		Schema schema = SchemaLoader.load(new JSONObject(new JSONTokener(inputStream)));
+		if (item.isArray()) {
+			schema.validate(new JSONArray(Json));
+		} else {
+			schema.validate(new JSONObject(Json));
+		}
 	}
 
 }
